@@ -90,16 +90,10 @@ async function clear() {
     }
 }
 
-async function cache(): Promise<Store<string, unknown>> {
+async function cache() {
     const tmp = path.join(__dirname, '.file-store');
     if (await exists(tmp)) {
         await rmdir(tmp);
     }
     return fileStore(tmp)('test');
 }
-
-type Store<K, V> = {
-    get(key: K): Promise<V>;
-    set(key: K, value: V): Promise<V>;
-    toKey(...args: unknown[]): Promise<K>;
-};
