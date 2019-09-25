@@ -23,13 +23,14 @@ function fileStore(dir: string = path.join(process.cwd(), '.file-store')): fileS
                 const data = Buffer.from(JSON.stringify(value), 'utf8');
                 fs.writeFile(file, data, () => resolve(value));
             }),
-            toKey: (args) => Promise.resolve(id + '.' + hash(JSON.stringify(args))),
+            toKey: (args) => new Promise((resolve) => {
+                resolve(id + '.' + hash(JSON.stringify(args)));
+            }),
         };
     };
 }
 
 function ensureExists(dir: string) {
-    console.log(dir);
     try { fs.accessSync(dir); } catch (err) { fs.mkdirSync(dir); }
 }
 
