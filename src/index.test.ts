@@ -13,12 +13,13 @@ afterEach(() => clear());
 describe('fileStore creation', () => {
 
     test('Should create fileStore', async () => {
-        expect(await fileStore()('test')).toBeDefined();
+        const factory = fileStore<string>();
+        expect(factory('test')).toBeDefined();
         await rmdir('.file-store');
     });
 
     test('Should re-create fileStore on set if not present', async () => {
-        const store = await fileStore()('test');
+        const store = fileStore()('test');
         await store.set('a', 'b');
         expect(await store.get('a')).toBe('b');
         await rmdir('.file-store');
