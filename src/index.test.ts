@@ -13,8 +13,8 @@ afterEach(() => clear());
 describe('fileStore creation', () => {
 
     test('Should create fileStore', async () => {
-        const factory = fileStore<string>();
-        expect(factory('test')).toBeDefined();
+        const factory = fileStore();
+        expect(factory<string>('test')).toBeDefined();
         await rmdir('.file-store');
     });
 
@@ -54,11 +54,19 @@ describe('fileStore.set', () => {
         expect(await store.set(key, value)).toBe(value);
     });
 
-    test('Should store value two times', async () => {
+    test('Should store (key, value) two times', async () => {
         const store = await cache();
         const key = await store.toKey(['Hi', true]);
         const value = 'test';
         expect(await store.set(key, value)).toBe(await store.set(key, value));
+    });
+
+    test('Should store two different values', async () => {
+        const store = await cache();
+        await store.set('a', 1);
+        await store.set('b', 2);
+        expect(await store.get('a')).toBe(1);
+        expect(await store.get('b')).toBe(2);
     });
 });
 
@@ -93,8 +101,5 @@ async function clear() {
 
 async function cache() {
     const tmp = path.join(__dirname, '.file-store');
-    if (await exists(tmp)) {
-        await rmdir(tmp);
-    }
     return fileStore(tmp)('test');
 }

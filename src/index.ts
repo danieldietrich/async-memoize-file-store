@@ -8,7 +8,7 @@ import * as path from 'path';
  * @param dir the cache directory name, default: `path.join(process.cwd(), '.file-store'`. the parent dir must exist.
  * @returns a new file store factory that takes a unique id and returns a file store.
  */
-function fileStore<V>(dir: string = path.join(process.cwd(), '.file-store')): fileStore.FileStoreFactory<V> {
+function fileStore(dir: string = path.join(process.cwd(), '.file-store')): fileStore.FileStoreFactory {
     return (id) => {
         return {
             get: (key) => new Promise((resolve, reject) => {
@@ -29,6 +29,7 @@ function fileStore<V>(dir: string = path.join(process.cwd(), '.file-store')): fi
 }
 
 function ensureExists(dir: string) {
+    console.log(dir);
     try { fs.accessSync(dir); } catch (err) { fs.mkdirSync(dir); }
 }
 
@@ -47,7 +48,7 @@ declare namespace memoize {
 
 // needed to allow importing '.' in unit test
 namespace fileStore {
-    export type FileStoreFactory<V> = (id: string) => memoize.Store<string, V>;
+    export type FileStoreFactory = <V>(id: string) => memoize.Store<string, V>;
 }
 
 export = fileStore;
