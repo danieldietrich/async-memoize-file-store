@@ -22,28 +22,42 @@ npm i @danieldietrich/async-memoize-file-store
 
 The module supports ES6 _import_ and CommonJS _require_ style.
 
+A file store is used in conjunction with the npm module [@danieldietrich/async-memoize](https://www.npmjs.com/package/@danieldietrich/async-memoize).
+
 ```ts
 import memoize from '@danieldietrich/async-memoize';
 import fileStore from '@danieldietrich/async-memoize-file-store';
+```
 
-// an arbitrary function
-declare function fn(i: number, s: string, b: boolean): Promise<string>;
+A file store is bound to a specific directory. By default it is `path.join(__dirname, '.file-store'))`.
 
-async function example1() {
-    const cacheFor = fileStore();
-    // creates a cache directory `.file-store/` in the module directory
-    const cache = cacheFor('my-module.my-function');
-    const memoized = memoize(fn, cache);
-    const result = memoized(1, 'a', true);
-}
+```ts
+const storeFactory = fileStore();
+```
 
-async function example2() {
-    const cacheFor = fileStore('my/path/.cache');
-    // creates a cache directory `my/path/.cache`
-    const cache = cacheFor('my-module.my-function');
-    const memoized = memoize(fn, cache);
-    const result = memoized(1, 'a', true);
-}
+Optionally, the store directory can be changed to a different location. Please note that the parent directory is required to already exist.
+
+```ts
+const storeFactory = fileStore('/tmp/.my-cache');
+```
+
+A file store is used in conjunction with function memoization. For each function that is memoized, we need a unique id. Valid id characters are `a-z A-Z 0-9 - . _ ~ ! $ & ' ( ) + , ; = @`. Invalid characters will be replaced with dash `-`. Please use only valid characters, otherwise it might lead to name collisions.
+
+```ts
+const store = storeFactory('my-module.my-function');
+```
+
+Once we created a file store instance, we can start to memoize function calls.
+
+```ts
+// example
+function myFunction(a: number, b: string, c: boolean): string[] { return []; }
+
+// typesafe, memoized version of myFunction
+const mem = memoize(myFunction, store);
+
+// result is written to the file store and returned
+const res = mem(1, 'ok', true);
 ```
 
 ---
