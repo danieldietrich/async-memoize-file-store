@@ -1,6 +1,6 @@
 {
   "name": "@danieldietrich/async-memoize-file-store",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Filesystem store for the async-memoize library",
   "keywords": [
     "async",
