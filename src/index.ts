@@ -64,7 +64,7 @@ function hash(str: string): string {
 declare namespace memoize {
     type Store<K, V> = {
         get(key: K): Promise<V>;
-        set(key: K, value: V): Promise<V>;
+        set(key: K, value: V): Promise<void>;
         toKey(...args: unknown[]): Promise<K>;
     };
 }

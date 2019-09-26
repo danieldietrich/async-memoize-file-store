@@ -15,7 +15,8 @@ describe('fileStore creation', () => {
 
     test('Should create fileStore', async () => {
         const factory = fileStore();
-        expect(factory<string>('test')).toBeDefined();
+        const store = factory('test');
+        expect(store).toBeDefined();
         await rmdir(tmp);
     });
 
