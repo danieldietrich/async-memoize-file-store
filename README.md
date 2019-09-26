@@ -29,7 +29,7 @@ import memoize from '@danieldietrich/async-memoize';
 import fileStore from '@danieldietrich/async-memoize-file-store';
 ```
 
-A file store is bound to a specific directory. By default it is `path.join(__dirname, '.file-store'))`.
+A file store is bound to a specific directory. By default it is `path.join(process.cwd(), '.file-store'))`.
 
 ```ts
 const storeFactory = fileStore();

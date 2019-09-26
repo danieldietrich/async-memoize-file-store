@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as rimraf from 'rimraf';
 import { promisify } from 'util';
 
-const tmp = path.join(__dirname, '.file-store');
+const tmp = path.join(process.cwd(), '.file-store');
 const access = promisify(fs.access);
 const exists = (target: string) => access(target).then(() => true).catch(() => false); // fs.exists has been deprecated
 const rmdir = promisify(rimraf);

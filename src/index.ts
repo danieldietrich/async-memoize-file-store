@@ -10,12 +10,12 @@ const invalidChars = /[^a-zA-Z0-9\-._~!$&'()+,;=@]/g;
 /**
  * A file store to be used with https://npmjs.com/danieldietrich/async-memoize
  *
- * @param dir the cache directory name, default: `path.join(__dirname, '.file-store'`. the parent dir must exist.
+ * @param dir the cache directory name, default: `path.join(process.cwd(), '.file-store'`. the parent dir must exist.
  * @returns a new file store factory that takes a unique `id` and returns a new file store.
  *          Valid id characters are `a-z A-Z 0-9 - . _ ~ ! $ & ' ( ) + , ; = @`.
  *          Invalid characters will be replaced with dash `-`.
  */
-function fileStore(dir: string = path.join(__dirname, '.file-store')): fileStore.FileStoreFactory {
+function fileStore(dir: string = path.join(process.cwd(), '.file-store')): fileStore.FileStoreFactory {
     return (id) => {
         // feasible compromise: trading possible exception with possible name collision
         const prefix = id.replace(invalidChars, '-');
