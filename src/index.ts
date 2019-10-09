@@ -60,18 +60,16 @@ function hash(str: string): string {
     return crypto.createHash('sha256').update(str).digest('hex');
 }
 
-// assumed to be present at runtime by importing 'async-memoize'
-declare namespace memoize {
-    type Store<K, V> = {
+// needed to allow importing '.' in unit test
+namespace fileStore {
+
+    export type Store<K, V> = {
         get(key: K): Promise<V>;
         set(key: K, value: V): Promise<void>;
         toKey(...args: unknown[]): Promise<K>;
     };
-}
 
-// needed to allow importing '.' in unit test
-namespace fileStore {
-    export type FileStoreFactory = <V>(id: string) => memoize.Store<string, V>;
+    export type FileStoreFactory = <V>(id: string) => Store<string, V>;
 }
 
 export = fileStore;
